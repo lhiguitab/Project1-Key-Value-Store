@@ -4,7 +4,7 @@
 #include <time.h>
 #include "hash_table.h"
 
-#define MAX_LINE 1024
+#define MAX_LINE 65536
 
 void readCSV(const char *filename) {
     FILE *file = fopen(filename, "r");
@@ -41,9 +41,8 @@ void readCSV(const char *filename) {
 int main() {
     clock_t start = clock();
 
-    readCSV("./Dataset/games.csv");
+    readCSV("./Dataset/recommendations.csv");
 
-    char *value = search("708450");
     char *result = search("708450");
     if (result) {
         printf("Value: %s\n", result);
@@ -52,7 +51,7 @@ int main() {
     }
 
     // Free the memory used by the hash table
-    free_table();
+    //free_table();
 
     clock_t end = clock();
     double time = (double)(end - start) / CLOCKS_PER_SEC;

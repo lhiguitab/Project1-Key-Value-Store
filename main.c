@@ -3,36 +3,36 @@
 #include <string.h>
 #include <time.h>
 
-#define MAX_LINE 50874
+#define MAX_LINE 1024
 
-void leerCSV(const char *filename) {
+void readCSV(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (!file) {
-        perror("No se pudo abrir el archivo");
+        perror("It was not possible to open the file");
         return;
     }
 
     char linea[MAX_LINE];
     while (fgets(linea, MAX_LINE, file)) {
-        // Separar los valores por comas
-        // char *token = strtok(linea, ",");
-        // while (token) {
-        //     printf("%s | ", token);
-        //     token = strtok(NULL, ",");
-        // }
-        // printf("\n");
+    //     // Separate the line by commas
+        char *token = strtok(linea, ",");
+        while (token) {
+            printf("%s | ", token);
+            token = strtok(NULL, ",");
+        }
+        printf("\n");
     }
     fclose(file);
 }
 
 int main() {
-    clock_t inicio = clock();
+    clock_t start = clock();
 
-    leerCSV("./Dataset/games.csv");
+    readCSV("./Dataset/recommendations.csv");
 
-    clock_t fin = clock();
-    double tiempo = (double)(fin - inicio) / CLOCKS_PER_SEC;
-    printf("Tiempo de ejecución: %f segundos\n", tiempo);
+    clock_t end = clock();
+    double time = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("Execution time: %f seconds\n", time);
 
     return 0;
 }

@@ -4,7 +4,7 @@
 #include <time.h>
 #include "hash_table.h"
 
-#define MAX_LINE 65536
+#define MAX_LINE 4096
 
 void readCSV(const char *filename) {
     FILE *file = fopen(filename, "r");

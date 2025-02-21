@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TABLE_SIZE 1024
+#define TABLE_SIZE 4096
 
 // Define the structure of a node
 typedef struct Node {

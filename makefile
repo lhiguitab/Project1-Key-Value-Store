@@ -2,10 +2,7 @@
 CC = gcc
 
 # Source files
-SRC = main.c hash_table.c
-
-# Object files
-OBJ = $(SRC:.c=.o)
+SRC = main.c
 
 # Executable name
 EXEC = main
@@ -14,20 +11,17 @@ EXEC = main
 CFLAGS = -std=c11 -O2 -Wall
 
 # Default rule: compile the project
-$(EXEC): $(OBJ)
-	$(CC) $(CFLAGS) -o $(EXEC) $(OBJ)
-
-# Rule to compile source files into object files
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(EXEC):
+	$(CC) $(CFLAGS) -o $(EXEC) $(SRC)
 
 # Run the program
 run: $(EXEC)
+	$(CC) $(CFLAGS) -o $(EXEC) $(SRC)
 	./$(EXEC)
 
-# Remove object files and the executable
+# Remove the executable
 clean:
-	rm -f $(OBJ) $(EXEC)
+	rm -f $(EXEC)
 
 # Indicate that these are not files
-.PHONY: clean run rm
+.PHONY: clean run

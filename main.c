@@ -126,7 +126,7 @@ void load_games_from_csv(const char *filename) {
         return;
     }
 
-    char line[512];  // Buffer for each line
+    char line[MAX_LINE];  // Buffer for each line
     while (fgets(line, sizeof(line), file)) {
         int app_id, positive_ratio, user_reviews;
         char title[100], rating[20];
@@ -146,7 +146,7 @@ void load_users_from_csv(const char *filename) {
         return;
     }
 
-    char line[512];  // Buffer for each line
+    char line[MAX_LINE];  // Buffer for each line
     while (fgets(line, sizeof(line), file)) {
         int user_id, reviews;
 
@@ -165,7 +165,7 @@ void load_recommendations_from_csv(const char *filename) {
         return;
     }
 
-    char line[4096];  // Buffer for each line
+    char line[MAX_LINE];  // Buffer for each line
     while (fgets(line, sizeof(line), file)) {
         int review_id, app_id, user_id;
 

@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Definición de variables globales */
+// Global variables
 Game *games = NULL;
 User *users = NULL;
 Review *reviews = NULL;
 
+// Add the date to the hash table
 void add_game(int app_id, const char *title, const char *rating, int positive_ratio, int user_reviews) {
     Game *game = malloc(sizeof(Game));
     game->app_id = app_id;
@@ -32,6 +33,7 @@ void add_review(int review_id, int app_id, int user_id) {
     HASH_ADD_INT(reviews, review_id, review);
 }
 
+// Find the date in the hash table
 Game *find_game(int app_id) {
     Game *game = NULL;
     HASH_FIND_INT(games, &app_id, game);

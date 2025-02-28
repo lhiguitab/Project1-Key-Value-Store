@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Funciones de conversión: convertir tablas hash a arreglos */
+// Methods to convert hash tables to arrays
 Game* games_to_array(int *count) {
     *count = 0;
     Game *g, *tmp;
@@ -32,7 +32,7 @@ User* users_to_array(int *count) {
     return arr;
 }
 
-/* Comparadores para qsort */
+// Comparators for qsort
 int cmp_games_desc_by_user_reviews(const void *a, const void *b) {
     const Game *ga = (const Game *)a;
     const Game *gb = (const Game *)b;
@@ -51,43 +51,43 @@ int cmp_users_desc_by_reviews(const void *a, const void *b) {
     return (ub->reviews - ua->reviews);
 }
 
-/* Top 10 juegos más recomendados (por user_reviews) */
+// Top 10 most recommended games (by user_reviews)
 void top10_most_recommended_games(void) {
     int count;
     Game *arr = games_to_array(&count);
     if (count == 0) {
-        printf("No hay juegos cargados.\n");
+        printf("No loaded games.\n");
         return;
     }
     qsort(arr, count, sizeof(Game), cmp_games_desc_by_user_reviews);
     int top = (count < 10) ? count : 10;
-    printf("\n=== Top %d Juegos más recomendados (por user_reviews) ===\n", top);
+    printf("\n=== Top %d most recommended games\n", top);
     for (int i = 0; i < top; i++) {
-        printf("%d) %s (app_id=%d) - user_reviews=%d\n",
+        printf("%d) %s - app_id:%d - user_reviews:%d\n",
                i + 1, arr[i].title, arr[i].app_id, arr[i].user_reviews);
     }
     free(arr);
 }
 
-/* Bottom 10 juegos menos recomendados (por user_reviews) */
+// Bottom 10 less recommended games (by user_reviews)
 void bottom10_less_recommended_games(void) {
     int count;
     Game *arr = games_to_array(&count);
     if (count == 0) {
-        printf("No hay juegos cargados.\n");
+        printf("No loaded games.\n");
         return;
     }
     qsort(arr, count, sizeof(Game), cmp_games_asc_by_user_reviews);
     int bottom = (count < 10) ? count : 10;
-    printf("\n=== Bottom %d Juegos menos recomendados (por user_reviews) ===\n", bottom);
+    printf("\nBottom %d less recommended games\n", bottom);
     for (int i = 0; i < bottom; i++) {
-        printf("%d) %s (app_id=%d) - user_reviews=%d\n",
+        printf("%d) %s - app_id:%d - user_reviews=%d\n",
                i + 1, arr[i].title, arr[i].app_id, arr[i].user_reviews);
     }
     free(arr);
 }
 
-/* Retorna un arreglo de los usuarios con mayor cantidad de reviews */
+// Returns an array with the top users by reviews
 User* top_users_by_reviews(int top_n, int *out_size) {
     int count;
     User *arr = users_to_array(&count);
@@ -97,20 +97,20 @@ User* top_users_by_reviews(int top_n, int *out_size) {
     }
     qsort(arr, count, sizeof(User), cmp_users_desc_by_reviews);
     *out_size = (count < top_n) ? count : top_n;
-    return arr;  // El llamador debe liberar el arreglo
+    return arr;  
 }
 
-/* Muestra el top 10 usuarios con más recomendaciones */
+// Top 10 users with most recommendations
 void top10_user_with_most_recommendations(void) {
     int top_n = 10;
     int out_size;
     User *top_users = top_users_by_reviews(top_n, &out_size);
     if (out_size == 0) {
         free(top_users);
-        printf("\nNo hay usuarios o no se pudo obtener el top.\n");
+        printf("\nIt wasn't possible obtain the top.\n");
         return;
     }
-    printf("\n=== Top %d Usuarios con más recomendaciones ===\n", top_n);
+    printf("\nTop %d users with most recommendations\n", top_n);
     for (int i = 0; i < out_size; i++) {
         printf("%d) User ID: %d - Reviews: %d\n",
                i + 1, top_users[i].user_id, top_users[i].reviews);
@@ -118,33 +118,14 @@ void top10_user_with_most_recommendations(void) {
     free(top_users);
 }
 
-/* Muestra el usuario con más recomendaciones */
-void user_with_most_recommendations(void) {
-    User *u, *tmp;
-    User *max_user = NULL;
-    int max_reviews = -1;
-    HASH_ITER(hh, users, u, tmp) {
-        if (u->reviews > max_reviews) {
-            max_reviews = u->reviews;
-            max_user = u;
-        }
-    }
-    printf("\n=== Usuario con más recomendaciones ===\n");
-    if (max_user) {
-        printf("User ID: %d - Reviews: %d\n", max_user->user_id, max_user->reviews);
-    } else {
-        printf("No hay usuarios cargados.\n");
-    }
-}
-
-/* Juegos más recomendados por los Top 10 usuarios */
+// Most recommended games by top 10 users
 void games_most_recommended_by_top10(void) {
     int top_n = 10;
     int out_size;
     User *top_users = top_users_by_reviews(top_n, &out_size);
     if (out_size == 0) {
         free(top_users);
-        printf("\nNo hay usuarios o no se pudo obtener el top.\n");
+        printf("\nIt wasn't possible obtain the top.\n");
         return;
     }
     int *top_user_ids = malloc(out_size * sizeof(int));
@@ -152,7 +133,8 @@ void games_most_recommended_by_top10(void) {
         top_user_ids[i] = top_users[i].user_id;
     }
     free(top_users);
-    /* Creamos un hash set de esos user_id */
+    
+    // Create a hash set of this users
     UserSet *top_set = NULL;
     for (int i = 0; i < out_size; i++) {
         UserSet *us = malloc(sizeof(UserSet));
@@ -160,7 +142,8 @@ void games_most_recommended_by_top10(void) {
         HASH_ADD_INT(top_set, user_id, us);
     }
     free(top_user_ids);
-    /* Recorremos la tabla de reviews y contamos las recomendaciones por app_id solo de los usuarios en top_set */
+
+    /// Iterate the reviews table and count the recommendations by app_id only for users in top_set
     Review *rev, *rev_tmp;
     AppCount *counts = NULL;
     HASH_ITER(hh, reviews, rev, rev_tmp) {
@@ -178,31 +161,47 @@ void games_most_recommended_by_top10(void) {
             ac->count += 1;
         }
     }
-    /* Liberamos el hash set */
+
+    // Free the hash set
     UserSet *us, *us_tmp;
     HASH_ITER(hh, top_set, us, us_tmp) {
         HASH_DEL(top_set, us);
         free(us);
     }
-    /* Buscamos el máximo conteo */
-    int max_count = 0;
+
+    // Create an array of AppCount pointers for sorting
+    int count_items = HASH_COUNT(counts);
+    if (count_items == 0) {
+        printf("\nThere are no reviews from the top users.\n");
+        return;
+    }
+    AppCount **ac_array = malloc(count_items * sizeof(AppCount *));
+    int idx = 0;
     AppCount *ac, *ac_tmp;
     HASH_ITER(hh, counts, ac, ac_tmp) {
-        if (ac->count > max_count)
-            max_count = ac->count;
+        ac_array[idx++] = ac;
     }
-    printf("\n=== Juego(s) más recomendado(s) por los Top %d usuarios ===\n", top_n);
-    HASH_ITER(hh, counts, ac, ac_tmp) {
-        if (ac->count == max_count) {
-            Game *g = find_game(ac->app_id);
-            if (g) {
-                printf("App ID: %d | Title: %s | Recs among top %d users: %d\n",
-                       g->app_id, g->title, top_n, ac->count);
-            } else {
-                printf("App ID: %d (no info in 'games') - Recs: %d\n", ac->app_id, ac->count);
-            }
+    // Comparator for qsort: descending order by count
+    int cmp_appcount_desc(const void *a, const void *b) {
+        AppCount *ac1 = *(AppCount **)a;
+        AppCount *ac2 = *(AppCount **)b;
+        return (ac2->count - ac1->count);
+    }
+    qsort(ac_array, count_items, sizeof(AppCount *), cmp_appcount_desc);
+    int top_games = (count_items < 3) ? count_items : 3;
+    printf("\nTop %d most recommended games by top %d users\n", top_games, top_n);
+    for (int i = 0; i < top_games; i++) {
+        Game *g = find_game(ac_array[i]->app_id);
+        if (g) {
+            printf("%d) App ID: %d | Title: %s | Recommendationss among top %d users: %d\n",
+                   i + 1, g->app_id, g->title, top_n, ac_array[i]->count);
+        } else {
+            printf("%d) App ID: %d (no info in 'games') - Recs: %d\n",
+                i + 1, ac_array[i]->app_id, ac_array[i]->count);
         }
     }
+    free(ac_array);
+    // Free the counts hash
     HASH_ITER(hh, counts, ac, ac_tmp) {
         HASH_DEL(counts, ac);
         free(ac);

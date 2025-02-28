@@ -1,3 +1,5 @@
+// Connection file
+
 #ifndef STORE_H
 #define STORE_H
 
@@ -5,4 +7,4 @@
 #include "csv_loader.h"
 #include "top_calculations.h"
 
-#endif /* STORE_H */
+#endif

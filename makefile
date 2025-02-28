@@ -8,7 +8,7 @@ SRC = main.c
 EXEC = main
 
 # Compilation flags (-Wall enables warnings)
-CFLAGS = -std=c11 -O2 -Wall
+CFLAGS = -std=c11 -O3 -Wall
 
 # Default rule: compile the project
 $(EXEC):

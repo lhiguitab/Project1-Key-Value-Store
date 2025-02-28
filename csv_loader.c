@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_LINE 4096
+#define MAX_LINE 4096 // Buffer to read lines from CSV files
 
 void load_games_from_csv(const char *filename) {
     FILE *file = fopen(filename, "r");

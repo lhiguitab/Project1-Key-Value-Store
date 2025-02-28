@@ -3,12 +3,10 @@
 
 #include "models.h"
 
-/* Prototipos para funciones que calculan los “tops” */
 void top10_most_recommended_games(void);
 void bottom10_less_recommended_games(void);
 User* top_users_by_reviews(int top_n, int *out_size);
 void top10_user_with_most_recommendations(void);
-void user_with_most_recommendations(void);
 void games_most_recommended_by_top10(void);
 
-#endif /* TOP_CALCULATIONS_H */
+#endif

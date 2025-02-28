@@ -135,7 +135,6 @@ void load_games_from_csv(const char *filename) {
     printf("Loading games from CSV file...\n");
     
     char line[MAX_LINE];  // Buffer for each line
-    char* temp = strcmp(filename, "./Dataset/games.csv") ;
     while (fgets(line, sizeof(line), file)) {
         int app_id, positive_ratio, user_reviews;
         char title[100], rating[20];
@@ -247,14 +246,15 @@ int main() {
 
     clock_t start = clock();
 
-    // load_recommendations_from_csv("./Dataset/recommendations.csv");
-    load_games_from_csv("./Dataset/games.csv");
+    load_recommendations_from_csv("./Dataset/recommendations.csv");
+    // load_games_from_csv("./Dataset/games.csv");
     // load_users_from_csv("./Dataset/users.csv");
 
     clock_t end = clock();
 
     clock_t start_search = clock();
-    printf("app_id: %d, title: %s, rating: %s, positive_ratio: %d, user_reviews: %d\n", find_game(13500)->app_id, find_game(13500)->title, find_game(13500)->rating, find_game(13500)->positive_ratio, find_game(13500)->user_reviews);
+    // printf("app_id: %d, title: %s, rating: %s, positive_ratio: %d, user_reviews: %d\n", find_game(13500)->app_id, find_game(13500)->title, find_game(13500)->rating, find_game(13500)->positive_ratio, find_game(13500)->user_reviews);
+    printf("review_id: %d, app_id: %d, user_id: %d\n", find_review(1)->review_id, find_review(1)->app_id, find_review(1)->user_id);
     clock_t end_search = clock();
 
 

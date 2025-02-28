@@ -247,14 +247,15 @@ int main() {
 
     clock_t start = clock();
 
-    // load_recommendations_from_csv("./Dataset/recommendations.csv");
-    load_games_from_csv("./Dataset/games.csv");
+    load_recommendations_from_csv("./Dataset/recommendations.csv");
+    // load_games_from_csv("./Dataset/games.csv");
     // load_users_from_csv("./Dataset/users.csv");
 
     clock_t end = clock();
 
     clock_t start_search = clock();
-    printf("app_id: %d, title: %s, rating: %s, positive_ratio: %d, user_reviews: %d\n", find_game(13500)->app_id, find_game(13500)->title, find_game(13500)->rating, find_game(13500)->positive_ratio, find_game(13500)->user_reviews);
+    // printf("app_id: %d, title: %s, rating: %s, positive_ratio: %d, user_reviews: %d\n", find_game(13500)->app_id, find_game(13500)->title, find_game(13500)->rating, find_game(13500)->positive_ratio, find_game(13500)->user_reviews);
+    printf("app_id: %d, user_id: %d, review_id: %d\n", find_review(0)->app_id, find_review(0)->user_id, find_review(0)->review_id);
     clock_t end_search = clock();
 
 

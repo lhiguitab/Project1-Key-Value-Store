@@ -23,7 +23,21 @@ void clear_cache() {
 }
 
 
-int main(void) {
+int main(int argc, char *argv[]) {
+    // Verifica que se haya pasado la opción -f y un folder
+    if (argc != 3 || strcmp(argv[1], "-f") != 0) {
+        fprintf(stderr, "Uso: %s -f FOLDER\n", argv[0]);
+        return 1;
+    }
+
+    char *folder = argv[2];
+    char games_file[512], users_file[512], recs_file[512];
+
+    // Construye las rutas de los archivos usando la carpeta proporcionada
+    snprintf(games_file, sizeof(games_file), "%s/games.csv", folder);
+    snprintf(users_file, sizeof(users_file), "%s/users.csv", folder);
+    snprintf(recs_file, sizeof(recs_file), "%s/recommendations.csv", folder);
+    
     clear_cache();
     
     // Load dataset

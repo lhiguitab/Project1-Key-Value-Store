@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <omp.h>
 
 void clear_cache() {
     #ifdef __linux__
@@ -18,7 +19,6 @@ void clear_cache() {
         printf("Operating system not supported for clearing cache.\n");
     #endif
 }
-
 
 int main(int argc, char *argv[]) {
     if (argc != 3 || strcmp(argv[1], "-f") != 0) {
@@ -58,17 +58,44 @@ int main(int argc, char *argv[]) {
     
     // Load dataset
     clock_t start = clock();
-    load_recommendations_from_csv(recs_file);
-    load_games_from_csv(games_file);
-    load_users_from_csv(users_file);
+    #pragma omp parallel sections
+    {
+        #pragma omp section
+        {
+            load_recommendations_from_csv(recs_file);
+        }
+        #pragma omp section
+        {
+            load_games_from_csv(games_file);
+        }
+        #pragma omp section
+        {
+            load_users_from_csv(users_file);
+        }
+    }
     clock_t end = clock();
     
     // Search tops
     clock_t start_search = clock();
-    top10_most_recommended_games();
-    bottom10_less_recommended_games();
-    top10_user_with_most_recommendations();
-    games_most_recommended_by_top10();
+    #pragma omp parallel sections
+    {
+        #pragma omp section
+        {
+            top10_most_recommended_games();
+        }
+        #pragma omp section
+        {
+            bottom10_less_recommended_games();
+        }
+        #pragma omp section
+        {
+            top10_user_with_most_recommendations();
+        }
+        #pragma omp section
+        {
+            games_most_recommended_by_top10();
+        }
+    }
     clock_t end_search = clock();
     
     // Free memory

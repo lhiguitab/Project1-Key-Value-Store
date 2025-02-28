@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <string.h>
-#include <omp.h>
 
 void clear_cache() {
     #ifdef __linux__

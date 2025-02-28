@@ -33,12 +33,12 @@ Follow these steps to clone, compile, and run the project on your system:
 
 4. Create the executable:
    ```sh
-   gcc main.o -o main
+   gcc -O3 main.c models.c csv_loader.c top_calculations.c -o dataload 
    ```
 
 5. Run the executable:
    ```sh
-   ./main
+   ./dataload -f FOLDER
    ```
 
 ## Usage

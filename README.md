@@ -26,17 +26,12 @@ Follow these steps to clone, compile, and run the project on your system:
    cd Project1-Key-Value-Store
    ```
 
-3. Compile the project:
-   ```sh
-   gcc main.c -c -o main.o
-   ```
-
-4. Create the executable:
+3. Create the executable:
    ```sh
    gcc -O3 main.c models.c csv_loader.c top_calculations.c -o dataload 
    ```
 
-5. Run the executable:
+4. Run the executable:
    ```sh
    ./dataload -f FOLDER
    ```

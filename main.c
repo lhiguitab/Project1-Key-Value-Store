@@ -77,9 +77,35 @@ void process_block(char *block, size_t size, HashTable *reviews) {
 
     for (size_t i = 0; i < size; i++) {
         if (block[i] == '\n' || i == size - 1) {
-            block[i] = '\0';
+            //block[i] = '\0';
 
             char *token = strtok(start, ",");
+
+            int app_id, user_id, review_id;
+
+            if (token) {
+                app_id = atoi(token);
+                for (int i = 0; i < 5; i++) token = strtok(NULL, ","); // helpful, funny, date, is_recommended, hours
+                token = strtok(NULL, ","); // user_id
+                if (token) {
+                    user_id = atoi(token);
+                    token = strtok(NULL, ","); // review_id
+                    if (token) {
+                        review_id = atoi(token);
+
+                        Review r = {review_id, app_id, user_id};
+
+                        #pragma omp critical
+                        insert(reviews, r);
+
+                        start = &block[i + 1];
+                    }
+                }
+            }
+
+
+            /*
+                char *token = strtok(start, ",");
             if (!token) continue;
 
             if (is_first_line) { 
@@ -103,11 +129,14 @@ void process_block(char *block, size_t size, HashTable *reviews) {
 
             int review_id = atoi(token);
             Review r = {review_id, app_id, user_id};
+            */
 
+           /*
             #pragma omp critical
             insert(reviews, r);
+           */
 
-            start = &block[i + 1];
+            
         }
     }
 }
@@ -141,7 +170,7 @@ int main() {
     if (fstat(fd, &sb) == -1) {
         perror("Error getting file size");
         close(fd);
-        return 1;
+        return 1;   
     }
 
     size_t filesize = sb.st_size;
@@ -151,6 +180,13 @@ int main() {
         close(fd);
         return 1;
     }
+
+    printf("First bytes of mapped file:\n");
+    for (size_t i = 0; i < 100 && i < filesize; i++) {
+        putchar(file_map[i]); // imprime los caracteres uno por uno
+    }
+    printf("\n");
+    
 
     printf("Processing file...\n");
 
@@ -162,7 +198,7 @@ int main() {
 
     print_reviews(reviews);
 
-    int search_id = 10;
+    int search_id = 0;
     Review* found_review = get(reviews, search_id);
     if (found_review) {
         printf("Review found: app_id=%d, user_id=%d, review_id=%d\n",

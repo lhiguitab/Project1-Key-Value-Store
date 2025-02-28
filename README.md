@@ -28,7 +28,7 @@ Follow these steps to clone, compile, and run the project on your system:
 
 3. Create the executable:
    ```sh
-   gcc -O3 main.c models.c csv_loader.c top_calculations.c -o dataload 
+   gcc -O3 main.c models.c csv_loader.c top_calculations.c -o dataload -fopenmp
    ```
 
 4. Run the executable:

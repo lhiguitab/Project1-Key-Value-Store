@@ -2,13 +2,15 @@
 CC = gcc
 
 # Source files
-SRC = main.c
+SRC =  main.c models.c csv_loader.c top_calculations.c
 
 # Executable name
-EXEC = main
+EXEC = dataload
+
+FOLDER_NAME = folder
 
 # Compilation flags (-Wall enables warnings)
-CFLAGS = -std=c11 -O3 -Wall
+CFLAGS = -std=c11 -O3 -Wall 
 
 # Default rule: compile the project
 $(EXEC):
@@ -17,7 +19,7 @@ $(EXEC):
 # Run the program
 run: $(EXEC)
 	$(CC) $(CFLAGS) -o $(EXEC) $(SRC)
-	./$(EXEC)
+	./$(EXEC) -f $(FOLDER_NAME)
 
 # Remove the executable
 clean:

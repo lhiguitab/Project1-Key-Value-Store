@@ -63,12 +63,47 @@ int main(int argc, char *argv[]) {
     clock_t end = clock();
     
     // Search tops
-    clock_t start_search = clock();
-    top10_most_recommended_games();
-    bottom10_less_recommended_games();
-    top10_user_with_most_recommendations();
-    games_most_recommended_by_top10();
-    clock_t end_search = clock();
+    // Menu
+    int option = 0;
+    do {
+        printf("\n1. Top 10 most recommended games\n");
+        printf("2. Bottom 10 less recommended games\n");
+        printf("3. Top 10 users with most recommendations\n");
+        printf("4. Games most recommended by top 10 users\n");
+        printf("5. All tops and search time\n");
+        printf("6. Exit\n");
+        printf("Option: ");
+        scanf("%d", &option);
+        switch (option) {
+            case 1:
+            top10_most_recommended_games(); // Top 10 most recommended games
+            break;
+            case 2:
+            bottom10_less_recommended_games(); // Bottom 10 less recommended games
+            break;
+            case 3:
+            top10_user_with_most_recommendations(); // Top 10 users with most recommendations
+            break;
+            case 4:
+            games_most_recommended_by_top10(); // Games most recommended by top 10 users
+            break;
+            case 5:
+                clock_t start_search = clock();
+                top10_most_recommended_games();
+                bottom10_less_recommended_games();
+                top10_user_with_most_recommendations();
+                games_most_recommended_by_top10();
+                clock_t end_search = clock();
+
+                double search_time = (double)(end_search - start_search) / CLOCKS_PER_SEC;
+                printf("Search time: %f seconds\n", search_time);
+                break;
+            case 6:
+                break;
+            default:
+                printf("Invalid option\n");
+        }
+    } while (option != 6);
     
     // Free memory
     free_reviews();
@@ -76,10 +111,8 @@ int main(int argc, char *argv[]) {
     free_users();
     
     double load_time = (double)(end - start) / CLOCKS_PER_SEC;
-    double search_time = (double)(end_search - start_search) / CLOCKS_PER_SEC;
     
     printf("\nExecution time: %f seconds\n", load_time);
-    printf("Search time: %f seconds\n", search_time);
     
     return 0;
 }

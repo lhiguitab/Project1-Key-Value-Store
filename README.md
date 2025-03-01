@@ -11,7 +11,7 @@
 - [Authors](#authors)
 
 ## Introduction
-This project involves the design and implementation of a Key-Value store. We will use the Key-Value store created to cache frequently accessed data within an application. The implementation of Key-Value storage will be done for game recommendations on Steam.
+This project involves designing and implementing a key-value store to serve as a cache for frequently accessed data in distributed systems. It specifically focuses on managing game recommendations on Steam by loading and processing datasets from CSV files, thereby enabling efficient storage and retrieval of recommendation data.
 
 ## Installation and Setup
 Follow these steps to clone, compile, and run the project on your system:
